@@ -9,7 +9,7 @@ Este projeto implementa um compilador para a linguagem LPMS utilizando **ANTLR4*
 ## Estrutura do Projeto
 
 - **Gramatica.g4**: Arquivo principal contendo a gramática da linguagem LPMS.
-- **inputs.txt**: Exemplos de código LPMS para testes.
+- **inputs.lps**: Exemplos de código LPMS para testes.
 - **requirements.txt**: Arquivo de dependências para o ambiente virtual.
 
 ---
@@ -86,7 +86,7 @@ Você pode executar os seguintes comandos para analisar os arquivos de entrada:
   antlr4-parse Gramatica.g4 prog -gui < {nome do txt de input}
   ```
 
-Substitua `{nome do txt de input}` pelo nome do arquivo de entrada, por exemplo, `inputs.txt`.
+Substitua `{nome do txt de input}` pelo nome do arquivo de entrada, por exemplo, `inputs.lps`.
 
 ---
 
@@ -125,7 +125,7 @@ Certifique-se de que:
 
 ```plaintext
 ├── Gramatica.g4          # Arquivo com a gramática da linguagem LPMS
-├── inputs.txt            # Arquivo de entrada de exemplo
+├── inputs.lps            # Arquivo de entrada de exemplo
 ├── requirements.txt      # Dependências para o ambiente virtual
 └── README.md             # Documentação do projeto
 ```
