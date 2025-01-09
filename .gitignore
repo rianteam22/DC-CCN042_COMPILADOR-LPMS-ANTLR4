@@ -170,3 +170,6 @@ cython_debug/
 
 # PyPI configuration file
 .pypirc
+Gramatica.interp
+tokens_input_ 0.txt
+tokens_input_ 1.txt
