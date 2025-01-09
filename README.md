@@ -11,6 +11,7 @@ Este projeto implementa um compilador para a linguagem LPMS utilizando **ANTLR4*
 - **Gramatica.g4**: Arquivo principal contendo a gramática da linguagem LPMS.
 - **input0.lps** e **input1.lps**: Exemplos de código LPMS para testes.
 - **requirements.txt**: Arquivo de dependências para o ambiente virtual.
+- **main.py**: Programa principal, destinado a receber os arquivos de entrada e executar os processamentos necessários, a cada etapa do projeto.
 
 ---
 
