@@ -4,23 +4,26 @@ prog: main;
 
 main: 'Program' VARNAME '{' decVar* comandos* '}';
 
-decVar: 'const' consts ';' | 'var' ':' varlist+;
-varlist: (VARNAME ','?)+ ':' VARTYPE ';';
-consts: (VARNAME '=' (STRING | VALINT | VALFLOAT | VALBOOL) ','?)+;
+decVar: varDecl | constDecl;
+varDecl: VARTYPE VARNAME (',' VARNAME)* ';';
+constDecl: 'const' VARNAME '=' (STRING | VALINT | VALFLOAT | VALBOOL) (',' VARNAME '=' (STRING | VALINT | VALFLOAT | VALBOOL))* ';';
 
 comandos: funcinput
         | funcprint
         | opMath
         | condicional
-        | cmdWhile;
+        | cmdWhile
+        | 'break' ';';
 
-funcprint: 'print' '(' expressaoAritmetica (',' expressaoAritmetica)* ')' ';';
+funcprint: 'print' '(' expressao (',' expressao)* ')' ';';
 funcinput: 'input' '(' VARNAME (',' VARNAME)* ')' ';';
 
 condicional: 'if' '(' expressaoBooleana ')' '{' comandos* '}' ('else' '{' comandos* '}')?;
 cmdWhile: 'while' '(' expressaoBooleana ')' '{' comandos* '}';
 
 opMath: VARNAME '=' (expressaoAritmetica | expressaoBooleana) ';';
+
+expressao: expressaoAritmetica | STRING;
 
 expressaoAritmetica
     : termo ('+' termo | '-' termo)*

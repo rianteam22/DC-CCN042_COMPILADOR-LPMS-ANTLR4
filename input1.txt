@@ -4,7 +4,7 @@ input(a, b);
 if (a > b){
     print("Maior: ", a);
 }else{
-    If( a < b){
+    if( a < b){
         print("Maior: ", b);
     }else{
         print("Iguais!");
