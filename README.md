@@ -21,7 +21,7 @@ Este projeto implementa um compilador para a linguagem LPMS utilizando **ANTLR4*
 Abra o terminal no Windows e clone o projeto do GitHub:
 
 ```bash
-git clone {link do repositorio}
+git clone https://github.com/rianteam22/DC-CCN042_COMPILADOR-LPMS-ANTLR4.git
 cd {pasta do repositorio}
 ```
 
@@ -74,7 +74,7 @@ antlr4 -o gen/ -listener -visitor -Dlanguage=Python3 Gramatica.g4
 
 ### 4. Como Testar o Compilador
 
-Você pode executar os seguintes comandos para analisar os arquivos de entrada:
+Você pode executar os seguintes comandos no cmd para analisar os arquivos de entrada:
 
 - **Exibir Tokens**:
   ```bash
