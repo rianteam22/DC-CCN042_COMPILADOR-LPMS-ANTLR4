@@ -9,8 +9,9 @@ Este projeto implementa um compilador para a linguagem LPMS utilizando **ANTLR4*
 ## Estrutura do Projeto
 
 - **Gramatica.g4**: Arquivo principal contendo a gramática da linguagem LPMS.
-- **inputs.lps**: Exemplos de código LPMS para testes.
+- **input0.lps** e **input1.lps**: Exemplos de código LPMS para testes.
 - **requirements.txt**: Arquivo de dependências para o ambiente virtual.
+- **main.py**: Programa principal, destinado a receber os arquivos de entrada e executar os processamentos necessários, a cada etapa do projeto.
 
 ---
 
@@ -21,7 +22,7 @@ Este projeto implementa um compilador para a linguagem LPMS utilizando **ANTLR4*
 Abra o terminal no Windows e clone o projeto do GitHub:
 
 ```bash
-git clone {link do repositorio}
+git clone https://github.com/rianteam22/DC-CCN042_COMPILADOR-LPMS-ANTLR4.git
 cd {pasta do repositorio}
 ```
 
@@ -63,39 +64,25 @@ Agora, o ANTLR está instalado e configurado no ambiente virtual.
 Com o ambiente virtual ativado, execute o comando para gerar o lexer e parser no formato Python:
 
 ```bash
-antlr4 -o .antlr/ -listener -visitor -Dlanguage=Python3 Gramatica.g4
+antlr4 -o gen/ -listener -visitor -Dlanguage=Python3 Gramatica.g4
 ```
 
-- **`-o .antlr/`**: Define a pasta de saída para os arquivos gerados.
+- **`-o gen/`**: Define a pasta de saída para os arquivos gerados.
 - **`-listener`** e **`-visitor`**: Geram arquivos adicionais para percorrer a árvore sintática.
 - **`-Dlanguage=Python3`**: Define Python como linguagem de destino.
 
 ---
 
-### 4. Testar o Compilador
+### 4. Como Testar o Compilador
 
-Você pode executar os seguintes comandos para analisar os arquivos de entrada:
+Você pode executar os seguintes comandos no cmd para analisar os arquivos de entrada:
 
 - **Exibir Tokens**:
   ```bash
-  antlr4-parse Gramatica.g4 prog -tokens < {nome do txt de input} > output_tokens_input.txt
+  python main.py {nome do .lps de input}
   ```
 
-- **Exibir Parse Tree**:
-  ```bash
-  antlr4-parse Gramatica.g4 prog -gui < {nome do txt de input}
-  ```
-
-Substitua `{nome do txt de input}` pelo nome do arquivo de entrada, por exemplo, `inputs.lps`.
-
----
-
-### Saída da Parse Tree:
-- O comando `-gui` abre uma janela exibindo a árvore sintática abstrata.
-
----
-
-Aqui está a seção do **README.md** com instruções para usar o script `setup_and_run.bat`:
+Substitua `{nome do .lps de input}` pelo nome do arquivo de entrada, por exemplo, `input0.lps`.
 
 ---
 
@@ -121,20 +108,10 @@ Certifique-se de que:
    ```
 ---
 
-## Estrutura do Projeto
-
-```plaintext
-├── Gramatica.g4          # Arquivo com a gramática da linguagem LPMS
-├── inputs.lps            # Arquivo de entrada de exemplo
-├── requirements.txt      # Dependências para o ambiente virtual
-└── README.md             # Documentação do projeto
-```
-
----
-
 ## Referências
 
 1. **ANTLR Documentation**: [https://www.antlr.org/](https://www.antlr.org/)
-2. Material da disciplina **Compiladores**.
+2. **ANTLR4-TOOL Documentation**: https://github.com/antlr/antlr4-tools
+3. Material da disciplina **Compiladores**.
 
 ---
