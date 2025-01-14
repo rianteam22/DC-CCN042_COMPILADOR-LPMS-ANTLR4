@@ -1,7 +1,8 @@
 import sys
-from antlr4 import FileStream, CommonTokenStream
+from antlr4 import *
 from gen.GramaticaLexer import GramaticaLexer
 from gen.GramaticaParser import GramaticaParser
+from antlr4.tree.Trees import Trees
 
 def main(arquivo_entrada):
     # Ler o arquivo de entrada
@@ -10,6 +11,10 @@ def main(arquivo_entrada):
     # Criar o lexer e o token stream
     lexer = GramaticaLexer(input_stream)
     tokens = CommonTokenStream(lexer)
+
+    # Criar parser e árvore de parsing
+    parser = GramaticaParser(tokens)
+    tree = parser.prog()
     
     # Dicionário de mapeamento de tokens
     token_map = {
@@ -53,10 +58,14 @@ def main(arquivo_entrada):
     
     # Preencher o token stream e imprimir os tokens no formato < tipo_token, token >
     tokens.fill()
+    '''
     for token in tokens.tokens:
         tipo_token = token_map.get(token.type, "UNKNOWN") # Se o token não estiver no dicionário, retorna "UNKNOWN"
         texto_token = token.text
-        print(f'<{tipo_token},{texto_token}>')
+        print(f'<{tipo_token},{texto_token}>')'''
+
+    # Imprimir a árvore de parsing
+    print(Trees.toStringTree(tree, None, parser))
 
 if __name__ == '__main__':
     # Verificar se o nome do arquivo de entrada foi passado como argumento

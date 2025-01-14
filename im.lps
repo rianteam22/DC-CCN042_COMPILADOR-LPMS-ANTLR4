@@ -1,0 +1,4 @@
+Program teste {
+    a = 2 + 2;
+    print("A = ", a);
+}
