@@ -3,7 +3,7 @@ __pycache__/
 *.py[cod]
 *$py.class
 .antlr/
-gen/
+
 
 # C extensions
 *.so
