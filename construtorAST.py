@@ -140,15 +140,21 @@ class ASTConstrutor(GramaticaVisitor):
             self.symbol_table[var_name] = "const"
             constants.append(f"{var_name} = {value}")
         return f"(ConstDecl: {', '.join(constants)})"
+    
+    def visitComandos(self, ctx: GramaticaParser.ComandosContext):
+        print("visitComandos")
+        commands = [self.visit(cmd) for cmd in ctx.comando()]
+        return f"{self.format_ast(commands)}"
 
     def visitOpMath(self, ctx: GramaticaParser.OpMathContext):
+        print("visitOpMath")
         var_name = ctx.VARNAME().getText()
         if var_name not in self.symbol_table:
             raise SemanticError(f"Variable '{var_name}' not declared", ctx.start.line)
         if self.symbol_table[var_name] == "const":
             raise SemanticError(f"Cannot assign to constant '{var_name}'", ctx.start.line)
         value = self.visit(ctx.expressaoAritmetica() or ctx.expressaoBooleana())
-        return f"(Atrib: {var_name} {value})"
+        return f"(Assign: {var_name} = {value})"
 
     def visitFuncprint(self, ctx: GramaticaParser.FuncprintContext):
         expressions = [self.visit(expr) for expr in ctx.expressao()]
@@ -159,11 +165,13 @@ class ASTConstrutor(GramaticaVisitor):
 
 
     def visitFuncinput(self, ctx: GramaticaParser.FuncinputContext):
+        print("visitFuncinput")
         variables = [var.getText() for var in ctx.VARNAME()]
         for var in variables:
             if var not in self.symbol_table:
                 raise SemanticError(f"Variable '{var}' not declared", ctx.start.line)
         return f"(Input: {', '.join(variables)})"
+
 
     def visitCondicional(self, ctx: GramaticaParser.CondicionalContext):
         condition = self.visit(ctx.expressaoBooleana())
@@ -174,9 +182,11 @@ class ASTConstrutor(GramaticaVisitor):
         return f"(If: {condition} (TrueBlock: {self.format_ast(true_block)}) (FalseBlock: {self.format_ast(false_block)}))"
 
     def visitCmdWhile(self, ctx: GramaticaParser.CmdWhileContext):
+        print("visitCmdWhile")
         condition = self.visit(ctx.expressaoBooleana())
         body = [self.visit(cmd) for cmd in ctx.comandos().comando()]
-        return f"(While: {condition} (Corpo: {self.format_ast(body)}))"
+        return f"(While: {condition} (Body: {self.format_ast(body)}))"
+
 
     def visitExpressao(self, ctx: GramaticaParser.ExpressaoContext):
         print("visitExpressao")
