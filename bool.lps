@@ -1,0 +1,5 @@
+Program teste{
+    bool a, b;
+    b = !a;
+    print(b);
+}
