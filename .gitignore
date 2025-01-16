@@ -175,3 +175,4 @@ cython_debug/
 Gramatica.interp
 tokens_input_ 0.txt
 tokens_input_ 1.txt
+inputs/

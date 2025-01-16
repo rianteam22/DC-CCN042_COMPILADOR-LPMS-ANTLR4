@@ -142,12 +142,12 @@ class ASTConstrutor(GramaticaVisitor):
         return f"(ConstDecl: {', '.join(constants)})"
     
     def visitComandos(self, ctx: GramaticaParser.ComandosContext):
-        print("visitComandos")
+        # print("visitComandos")
         commands = [self.visit(cmd) for cmd in ctx.comando()]
         return f"{self.format_ast(commands)}"
 
     def visitOpMath(self, ctx: GramaticaParser.OpMathContext):
-        print("visitOpMath")
+        # print("visitOpMath")
         var_name = ctx.VARNAME().getText()
         if var_name not in self.symbol_table:
             raise SemanticError(f"Variable '{var_name}' not declared", ctx.start.line)
@@ -164,7 +164,7 @@ class ASTConstrutor(GramaticaVisitor):
         return f"(Print: {', '.join(expressions)})"
 
     def visitFuncinput(self, ctx: GramaticaParser.FuncinputContext):
-        print("visitFuncinput")
+        # print("visitFuncinput")
         variables = [var.getText() for var in ctx.VARNAME()]
         for var in variables:
             if var not in self.symbol_table:
@@ -181,13 +181,13 @@ class ASTConstrutor(GramaticaVisitor):
         return f"(If: {condition} (TrueBlock: {self.format_ast(true_block)}) (FalseBlock: {self.format_ast(false_block)}))"
 
     def visitCmdWhile(self, ctx: GramaticaParser.CmdWhileContext):
-        print("visitCmdWhile")
+        # print("visitCmdWhile")
         condition = self.visit(ctx.expressaoBooleana())
         body = [self.visit(cmd) for cmd in ctx.comandos().comando()]
         return f"(While: {condition} (Body: {self.format_ast(body)}))"
 
     def visitExpressao(self, ctx: GramaticaParser.ExpressaoContext):
-        print("visitExpressao")
+        # print("visitExpressao")
         if ctx.expressaoAritmetica():
             return self.visit(ctx.expressaoAritmetica())
         elif ctx.STRING():
@@ -198,7 +198,7 @@ class ASTConstrutor(GramaticaVisitor):
 
 
     def visitExpressaoAritmetica(self, ctx: GramaticaParser.ExpressaoAritmeticaContext):
-        print("visitExpressaoAritmetica")
+        # print("visitExpressaoAritmetica")
         # Começa com o primeiro termo
         result = self.visit(ctx.termo(0))
         # Itera sobre os operadores e os termos subsequentes
@@ -224,7 +224,7 @@ class ASTConstrutor(GramaticaVisitor):
 
 
     def visitTermo(self, ctx: GramaticaParser.TermoContext):
-        print("visitTermo")
+        # print("visitTermo")
         # Começa com o primeiro fator
         result = self.visit(ctx.fator(0))
         # Itera sobre os operadores e os fatores subsequentes
@@ -236,7 +236,7 @@ class ASTConstrutor(GramaticaVisitor):
 
     
     def visitFator(self, ctx: GramaticaParser.FatorContext):
-        print("visitFator")
+        # print("visitFator")
         if ctx.VARNAME():
             return ctx.VARNAME().getText()
         elif ctx.VALINT():
