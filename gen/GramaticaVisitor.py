@@ -39,6 +39,16 @@ class GramaticaVisitor(ParseTreeVisitor):
         return self.visitChildren(ctx)
 
 
+    # Visit a parse tree produced by GramaticaParser#opMath.
+    def visitOpMath(self, ctx:GramaticaParser.OpMathContext):
+        return self.visitChildren(ctx)
+
+
+    # Visit a parse tree produced by GramaticaParser#comando.
+    def visitComando(self, ctx:GramaticaParser.ComandoContext):
+        return self.visitChildren(ctx)
+
+
     # Visit a parse tree produced by GramaticaParser#funcprint.
     def visitFuncprint(self, ctx:GramaticaParser.FuncprintContext):
         return self.visitChildren(ctx)
@@ -56,11 +66,6 @@ class GramaticaVisitor(ParseTreeVisitor):
 
     # Visit a parse tree produced by GramaticaParser#cmdWhile.
     def visitCmdWhile(self, ctx:GramaticaParser.CmdWhileContext):
-        return self.visitChildren(ctx)
-
-
-    # Visit a parse tree produced by GramaticaParser#opMath.
-    def visitOpMath(self, ctx:GramaticaParser.OpMathContext):
         return self.visitChildren(ctx)
 
 

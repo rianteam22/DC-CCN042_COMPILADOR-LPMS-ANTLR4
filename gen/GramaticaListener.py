@@ -62,6 +62,24 @@ class GramaticaListener(ParseTreeListener):
         pass
 
 
+    # Enter a parse tree produced by GramaticaParser#opMath.
+    def enterOpMath(self, ctx:GramaticaParser.OpMathContext):
+        pass
+
+    # Exit a parse tree produced by GramaticaParser#opMath.
+    def exitOpMath(self, ctx:GramaticaParser.OpMathContext):
+        pass
+
+
+    # Enter a parse tree produced by GramaticaParser#comando.
+    def enterComando(self, ctx:GramaticaParser.ComandoContext):
+        pass
+
+    # Exit a parse tree produced by GramaticaParser#comando.
+    def exitComando(self, ctx:GramaticaParser.ComandoContext):
+        pass
+
+
     # Enter a parse tree produced by GramaticaParser#funcprint.
     def enterFuncprint(self, ctx:GramaticaParser.FuncprintContext):
         pass
@@ -95,15 +113,6 @@ class GramaticaListener(ParseTreeListener):
 
     # Exit a parse tree produced by GramaticaParser#cmdWhile.
     def exitCmdWhile(self, ctx:GramaticaParser.CmdWhileContext):
-        pass
-
-
-    # Enter a parse tree produced by GramaticaParser#opMath.
-    def enterOpMath(self, ctx:GramaticaParser.OpMathContext):
-        pass
-
-    # Exit a parse tree produced by GramaticaParser#opMath.
-    def exitOpMath(self, ctx:GramaticaParser.OpMathContext):
         pass
 
 
