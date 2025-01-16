@@ -1,4 +1,6 @@
 Program teste {
-    a = 2 + 2;
-    print("A = ", a);
+    a = 2 + 5 * 2;
+    b = (2 + 5) * 2;
+    c = 2 + 5 * (2 + 3);
+    print(a, b, c);
 }

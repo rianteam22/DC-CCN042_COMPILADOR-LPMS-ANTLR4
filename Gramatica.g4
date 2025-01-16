@@ -2,13 +2,15 @@ grammar Gramatica;
 
 prog: main;
 
-main: 'Program' VARNAME '{' decVar* comandos+ '}';
+main: 'Program' VARNAME '{' decVar+ comandos+ '}';
 
 decVar: varDecl | constDecl;
 varDecl: VARTYPE VARNAME (',' VARNAME)* ';';
 constDecl: 'const' VARNAME '=' (STRING | VALINT | VALFLOAT | VALBOOL) (',' VARNAME '=' (STRING | VALINT | VALFLOAT | VALBOOL))* ';';
 
 comandos: comando+;
+
+opMath: VARNAME '=' (expressaoAritmetica | expressaoBooleana) ';';
 
 comando: funcinput
        | funcprint
@@ -20,15 +22,18 @@ comando: funcinput
 funcprint: 'print' '(' expressao (',' expressao)* ')' ';';
 funcinput: 'input' '(' VARNAME (',' VARNAME)* ')' ';';
 
-condicional: 'if' '(' expressaoBooleana ')' '{' comandos '}' (ELSE '{' comandos '}')?;
+condicional
+    : 'if' '(' expressaoBooleana ')' '{' comandos '}' ( 'else' '{' comandos '}' )?
+    ;
 cmdWhile: 'while' '(' expressaoBooleana ')' '{' comandos '}';
 
-opMath: VARNAME '=' (expressaoAritmetica | expressaoBooleana) ';';
 
 expressao: expressaoAritmetica | STRING;
 
-expressaoAritmetica: termo ('+' termo | '-' termo)*;
-termo: fator ('*' fator | '/' fator)*;
+expressaoAritmetica: termo (( '+' | '-' ) termo)*;
+
+termo: fator (('*' | '/') fator)*;
+
 fator: VARNAME
      | VALFLOAT
      | VALINT
@@ -45,7 +50,7 @@ VALBOOL: 'true' | 'false';
 VALINT: [0-9]+;
 VALFLOAT: [0-9]+ '.' [0-9]+;
 STRING: '"' .*? '"';
-ELSE: 'else';
+
 
 WS: [ \t\r\n]+ -> skip;
 LINE_COMMENT: '//' ~[\r\n]* -> skip;
