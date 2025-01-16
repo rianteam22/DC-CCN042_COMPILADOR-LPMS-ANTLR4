@@ -163,7 +163,6 @@ class ASTConstrutor(GramaticaVisitor):
                 print(f"Error in expression at index {idx}: {ctx.expressao(idx).getText()}")
         return f"(Print: {', '.join(expressions)})"
 
-
     def visitFuncinput(self, ctx: GramaticaParser.FuncinputContext):
         print("visitFuncinput")
         variables = [var.getText() for var in ctx.VARNAME()]
@@ -187,34 +186,57 @@ class ASTConstrutor(GramaticaVisitor):
         body = [self.visit(cmd) for cmd in ctx.comandos().comando()]
         return f"(While: {condition} (Body: {self.format_ast(body)}))"
 
-
     def visitExpressao(self, ctx: GramaticaParser.ExpressaoContext):
         print("visitExpressao")
         if ctx.expressaoAritmetica():
             return self.visit(ctx.expressaoAritmetica())
         elif ctx.STRING():
+            # Retorna o valor da string corretamente
             return ctx.STRING().getText() 
         else:
             raise SemanticError("Invalid expression", ctx.start.line)
 
 
+    def visitExpressaoAritmetica(self, ctx: GramaticaParser.ExpressaoAritmeticaContext):
+        print("visitExpressaoAritmetica")
+        # Começa com o primeiro termo
+        result = self.visit(ctx.termo(0))
+        # Itera sobre os operadores e os termos subsequentes
+        for i in range(1, len(ctx.termo())):
+            operator = ctx.getChild(2 * i - 1).getText()  # Operador entre os termos
+            right = self.visit(ctx.termo(i))  # Próximo termo
+            result = f"({result} {operator} {right})"  # Combina os resultados
+        return result
+    
+
     def visitExpressaoBooleana(self, ctx: GramaticaParser.ExpressaoBooleanaContext):
         if ctx.VALBOOL():
             return ctx.VALBOOL().getText()
-        elif ctx.getChildCount() == 3:
-            left = self.visit(ctx.expressaoAritmetica(0))
+        elif ctx.getChildCount() == 3:  # Comparação ou operação lógica binária
+            left = self.visit(ctx.expressaoAritmetica(0) or ctx.expressaoBooleana(0))
             operator = ctx.getChild(1).getText()
-            right = self.visit(ctx.expressaoAritmetica(1))
+            right = self.visit(ctx.expressaoAritmetica(1) or ctx.expressaoBooleana(1))
             return f"({left} {operator} {right})"
-        elif ctx.getChildCount() == 2:
+        elif ctx.getChildCount() == 2:  # Negação lógica
             operator = ctx.getChild(0).getText()
             operand = self.visit(ctx.expressaoBooleana(0))
             return f"({operator} {operand})"
 
-    def visitTermo(self, ctx: GramaticaParser.TermoContext):
-        return self.visit(ctx.fator(0))
 
+    def visitTermo(self, ctx: GramaticaParser.TermoContext):
+        print("visitTermo")
+        # Começa com o primeiro fator
+        result = self.visit(ctx.fator(0))
+        # Itera sobre os operadores e os fatores subsequentes
+        for i in range(1, len(ctx.fator())):
+            operator = ctx.getChild(2 * i - 1).getText()  # Operador entre os fatores
+            right = self.visit(ctx.fator(i))  # Próximo fator
+            result = f"({result} {operator} {right})"  # Combina os resultados
+        return result
+
+    
     def visitFator(self, ctx: GramaticaParser.FatorContext):
+        print("visitFator")
         if ctx.VARNAME():
             return ctx.VARNAME().getText()
         elif ctx.VALINT():
@@ -223,6 +245,7 @@ class ASTConstrutor(GramaticaVisitor):
             return ctx.VALFLOAT().getText()
         elif ctx.expressaoAritmetica():
             return f"({self.visit(ctx.expressaoAritmetica())})"
+
 
     def format_ast(self, elements):
         return " ".join(elements)
