@@ -138,24 +138,28 @@ class ASTConstrutor(GramaticaVisitor):
         return f"{self.format_ast(commands)}"
 
     def visitOpMath(self, ctx: GramaticaParser.OpMathContext):
-        var_name = ctx.VARNAME().getText()
+        var_name = ctx.VARNAME().getSymbol().text
         if var_name not in self.symbol_table:
             raise SemanticError(f"Variável '{var_name}' não declarada", ctx.start.line)
         if self.symbol_table[var_name] == "const":
             raise SemanticError(f"Não é possível atribuir valor à constante '{var_name}'", ctx.start.line)
         
-        var_type = self.symbol_table[var_name]
-        value = self.visit(ctx.expressaoAritmetica() or ctx.expressaoBooleana())
+        var_type = ctx.VARNAME().getSymbol().type
+        value_node = ctx.expressaoAritmetica() or ctx.expressaoBooleana()
+        value = self.visit(value_node)
         
         # Verificação de tipo
-        if var_type == "int" and not value.isdigit():
-            raise SemanticError(f"Não é possível atribuir valor não inteiro à variável inteira '{var_name}'", ctx.start.line)
-        if var_type == "float":
+        if var_type == "int":
+            try:
+                int(value)
+            except ValueError:
+                raise SemanticError(f"Não é possível atribuir valor não inteiro à variável inteira '{var_name}'", ctx.start.line)
+        elif var_type == "float":
             try:
                 float(value)
             except ValueError:
                 raise SemanticError(f"Não é possível atribuir valor não flutuante à variável flutuante '{var_name}'", ctx.start.line)
-        if var_type == "bool" and value not in ["true", "false"]:
+        elif var_type == "bool" and value not in ["true", "false"]:
             raise SemanticError(f"Não é possível atribuir valor não booleano à variável booleana '{var_name}'", ctx.start.line)
         
         return f"(Atribuição: {var_name} = {value})"
