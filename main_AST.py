@@ -1,23 +1,27 @@
 from antlr4 import FileStream, CommonTokenStream
 from gen.GramaticaLexer import GramaticaLexer
 from gen.GramaticaParser import GramaticaParser
-from construtorAST import ASTConstrutor
+from construtorAST import ASTConstrutor, SemanticError
 
 def main(file_path):
+    try:
+        lexer = GramaticaLexer(FileStream(file_path, encoding='utf-8'))
+        tokens = CommonTokenStream(lexer)
+        parser = GramaticaParser(tokens)
+        
+        tree = parser.prog()
 
-    lexer = GramaticaLexer(FileStream(file_path, encoding='utf-8'))
-    tokens = CommonTokenStream(lexer)
-    parser = GramaticaParser(tokens)
-    tree = parser.prog()
+        # Construção da AST
+        builder = ASTConstrutor()
+        ast = builder.visit(tree)
 
-    # Construção da AST
-    builder = ASTConstrutor()
-    ast = builder.visit(tree)
-
-    # Exibição da árvore sintática abstrata formatada
-    print("Árvore Sintática Abstrata (AST):\n")
-    print(ast)
-
+        # Exibição da árvore sintática abstrata formatada
+        print("Árvore Sintática Abstrata (AST):\n")
+        print(ast)
+    except SemanticError as e:
+        print(e)
+    except Exception as e:
+        print(f"Erro inesperado: {e}")
 
 if __name__ == "__main__":
     import sys

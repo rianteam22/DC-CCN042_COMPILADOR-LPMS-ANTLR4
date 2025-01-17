@@ -1,19 +1,10 @@
 from gen.GramaticaVisitor import GramaticaVisitor
 from gen.GramaticaParser import GramaticaParser
-from antlr4.error.ErrorListener import ErrorListener
 
 class SemanticError(Exception):
     def __init__(self, message, line):
-        super().__init__(f"Semantic Error: {message} at line {line}")
+        super().__init__(f"Erro Semântico: {message} na linha {line}")
         self.line = line
-
-class SyntaxErrorListener(ErrorListener):
-    def __init__(self):
-        super(SyntaxErrorListener, self).__init__()
-        self.errors = []
-
-    def syntaxError(self, recognizer, offendingSymbol, line, column, msg, e):
-        self.errors.append(f"Syntax Error: {msg} at line {line}, column {column}")
 
 # Definição das classes de nós da AST
 class BinaryOpNode:
@@ -104,7 +95,7 @@ def format_list(elements, level=0):
 
 class ASTConstrutor(GramaticaVisitor):
     def __init__(self):
-        self.symbol_table = {}  # Symbol table for semantic analysis
+        self.symbol_table = {} 
 
     def visitProg(self, ctx: GramaticaParser.ProgContext):
         return self.visit(ctx.main())
@@ -126,9 +117,9 @@ class ASTConstrutor(GramaticaVisitor):
         variables = [var.getText() for var in ctx.VARNAME()]
         for var in variables:
             if var in self.symbol_table:
-                raise SemanticError(f"Variable '{var}' already declared", ctx.start.line)
+                raise SemanticError(f"Variável '{var}' já declarada", ctx.start.line)
             self.symbol_table[var] = var_type
-        return f"(VarDecl: {var_type} {', '.join(variables)})"
+        return f"(DeclVar: {var_type} {', '.join(variables)})"
 
     def visitConstDecl(self, ctx: GramaticaParser.ConstDeclContext):
         constants = []
@@ -136,10 +127,10 @@ class ASTConstrutor(GramaticaVisitor):
             var_name = ctx.VARNAME(i).getText()
             value = self.visit(ctx.getChild(2 * i + 2))
             if var_name in self.symbol_table:
-                raise SemanticError(f"Constant '{var_name}' already declared", ctx.start.line)
+                raise SemanticError(f"Constante '{var_name}' já declarada", ctx.start.line)
             self.symbol_table[var_name] = "const"
             constants.append(f"{var_name} = {value}")
-        return f"(ConstDecl: {', '.join(constants)})"
+        return f"(DeclConst: {', '.join(constants)})"
     
     def visitComandos(self, ctx: GramaticaParser.ComandosContext):
         # print("visitComandos")
@@ -147,29 +138,42 @@ class ASTConstrutor(GramaticaVisitor):
         return f"{self.format_ast(commands)}"
 
     def visitOpMath(self, ctx: GramaticaParser.OpMathContext):
-        # print("visitOpMath")
         var_name = ctx.VARNAME().getText()
         if var_name not in self.symbol_table:
-            raise SemanticError(f"Variable '{var_name}' not declared", ctx.start.line)
+            raise SemanticError(f"Variável '{var_name}' não declarada", ctx.start.line)
         if self.symbol_table[var_name] == "const":
-            raise SemanticError(f"Cannot assign to constant '{var_name}'", ctx.start.line)
+            raise SemanticError(f"Não é possível atribuir valor à constante '{var_name}'", ctx.start.line)
+        
+        var_type = self.symbol_table[var_name]
         value = self.visit(ctx.expressaoAritmetica() or ctx.expressaoBooleana())
-        return f"(Assign: {var_name} = {value})"
+        
+        # Verificação de tipo
+        if var_type == "int" and not value.isdigit():
+            raise SemanticError(f"Não é possível atribuir valor não inteiro à variável inteira '{var_name}'", ctx.start.line)
+        if var_type == "float":
+            try:
+                float(value)
+            except ValueError:
+                raise SemanticError(f"Não é possível atribuir valor não flutuante à variável flutuante '{var_name}'", ctx.start.line)
+        if var_type == "bool" and value not in ["true", "false"]:
+            raise SemanticError(f"Não é possível atribuir valor não booleano à variável booleana '{var_name}'", ctx.start.line)
+        
+        return f"(Atribuição: {var_name} = {value})"
 
     def visitFuncprint(self, ctx: GramaticaParser.FuncprintContext):
         expressions = [self.visit(expr) for expr in ctx.expressao()]
         for idx, expr in enumerate(expressions):
             if expr is None:
-                print(f"Error in expression at index {idx}: {ctx.expressao(idx).getText()}")
-        return f"(Print: {', '.join(expressions)})"
+                print(f"Erro na expressão no índice {idx}: {ctx.expressao(idx).getText()}")
+        return f"(Imprimir: {', '.join(expressions)})"
 
     def visitFuncinput(self, ctx: GramaticaParser.FuncinputContext):
         # print("visitFuncinput")
         variables = [var.getText() for var in ctx.VARNAME()]
         for var in variables:
             if var not in self.symbol_table:
-                raise SemanticError(f"Variable '{var}' not declared", ctx.start.line)
-        return f"(Input: {', '.join(variables)})"
+                raise SemanticError(f"Variável '{var}' não declarada", ctx.start.line)
+        return f"(Entrada: {', '.join(variables)})"
 
 
     def visitCondicional(self, ctx: GramaticaParser.CondicionalContext):
@@ -178,13 +182,13 @@ class ASTConstrutor(GramaticaVisitor):
         false_block = []
         if ctx.comandos(1):
             false_block = [self.visit(cmd) for cmd in ctx.comandos(1).comando()]
-        return f"(If: {condition} (TrueBlock: {self.format_ast(true_block)}) (FalseBlock: {self.format_ast(false_block)}))"
+        return f"(Se: {condition} (BlocoVerdadeiro: {self.format_ast(true_block)}) (BlocoFalso: {self.format_ast(false_block)}))"
 
     def visitCmdWhile(self, ctx: GramaticaParser.CmdWhileContext):
         # print("visitCmdWhile")
         condition = self.visit(ctx.expressaoBooleana())
         body = [self.visit(cmd) for cmd in ctx.comandos().comando()]
-        return f"(While: {condition} (Body: {self.format_ast(body)}))"
+        return f"(Enquanto: {condition} (Corpo: {self.format_ast(body)}))"
 
     def visitExpressao(self, ctx: GramaticaParser.ExpressaoContext):
         # print("visitExpressao")
@@ -194,7 +198,7 @@ class ASTConstrutor(GramaticaVisitor):
             # Retorna o valor da string corretamente
             return ctx.STRING().getText() 
         else:
-            raise SemanticError("Invalid expression", ctx.start.line)
+            raise SemanticError("Expressão inválida", ctx.start.line)
 
 
     def visitExpressaoAritmetica(self, ctx: GramaticaParser.ExpressaoAritmeticaContext):
