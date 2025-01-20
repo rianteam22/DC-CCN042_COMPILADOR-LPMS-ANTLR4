@@ -32,15 +32,15 @@ class TACGenerator(GramaticaVisitor):
         for comando in ctx.comandos():
             self.visit(comando)
 
-    def visitVarDecl(self, ctx: GramaticaParser.VarDeclContext):
-        for var in ctx.VARNAME():
-            self.emit(f"declare {var.getText()}")
+    # def visitVarDecl(self, ctx: GramaticaParser.VarDeclContext):
+    #     for var in ctx.VARNAME():
+    #         self.emit(f"declare {var.getText()}")
 
-    def visitConstDecl(self, ctx: GramaticaParser.ConstDeclContext):
-        for i in range(len(ctx.VARNAME())):
-            var = ctx.VARNAME(i).getText()
-            value = ctx.getChild(4 + i * 4).getText()
-            self.emit(f"const {var} = {value}")
+    # def visitConstDecl(self, ctx: GramaticaParser.ConstDeclContext):
+    #     for i in range(len(ctx.VARNAME())):
+    #         var = ctx.VARNAME(i).getText()
+    #         value = ctx.getChild(4 + i * 4).getText()
+    #         self.emit(f"const {var} = {value}")
 
     def visitOpMath(self, ctx: GramaticaParser.OpMathContext):
         var = ctx.VARNAME().getText()
@@ -60,6 +60,28 @@ class TACGenerator(GramaticaVisitor):
     def visitTermo(self, ctx: GramaticaParser.TermoContext):
         if len(ctx.children) == 1:
             return ctx.getChild(0).getText()
+        left = self.visit(ctx.getChild(0))
+        op = ctx.getChild(1).getText()
+        right = self.visit(ctx.getChild(2))
+        temp = self.new_temp()
+        self.emit(f"{temp} = {left} {op} {right}")
+        return temp
+    
+    # def visitFator(self, ctx: GramaticaParser.FatorContext):
+    #     if len(ctx.children) == 1:
+    #         return ctx.getChild(0).getText()
+    #     left = self.visit(ctx.getChild(0))
+    #     op = ctx.getChild(1).getText()
+    #     right = self.visit(ctx.getChild(2))
+    #     temp = self.new_temp()
+    #     self.emit(f"{temp} = {left} {op} {right}")
+    #     return temp
+    
+    def visitFator(self, ctx: GramaticaParser.FatorContext):
+        if len(ctx.children) == 1:
+            return ctx.getChild(0).getText()
+        if ctx.getChild(0).getText() == '(' and ctx.getChild(2).getText() == ')':
+            return self.visit(ctx.getChild(1))
         left = self.visit(ctx.getChild(0))
         op = ctx.getChild(1).getText()
         right = self.visit(ctx.getChild(2))
@@ -99,21 +121,21 @@ class TACGenerator(GramaticaVisitor):
         self.emit(f"{temp} = {left} {op} {right}")
         return temp
 
-    def visitFuncprint(self, ctx: GramaticaParser.FuncprintContext):
-        for expr in ctx.expressao():
-            result = self.visit(expr)
-            self.emit(f"print {result}")
+    # def visitFuncprint(self, ctx: GramaticaParser.FuncprintContext):
+    #     for expr in ctx.expressao():
+    #         result = self.visit(expr)
+    #         self.emit(f"print {result}")
 
-    def visitFuncinput(self, ctx: GramaticaParser.FuncinputContext):
-        for var in ctx.VARNAME():
-            self.emit(f"input {var.getText()}")
+    # def visitFuncinput(self, ctx: GramaticaParser.FuncinputContext):
+    #     for var in ctx.VARNAME():
+    #         self.emit(f"input {var.getText()}")
 
 if __name__ == "__main__":
     from antlr4 import FileStream
     from gen.GramaticaLexer import GramaticaLexer
     from gen.GramaticaParser import GramaticaParser
 
-    input_stream = FileStream("input0.lps")
+    input_stream = FileStream("input1.lps")
     lexer = GramaticaLexer(input_stream)
     token_stream = CommonTokenStream(lexer)
     parser = GramaticaParser(token_stream)
