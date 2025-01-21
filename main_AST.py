@@ -26,6 +26,6 @@ def main(file_path):
 if __name__ == "__main__":
     import sys
     if len(sys.argv) < 2:
-        print("Uso: python programa.py <caminho_do_arquivo.lps>")
+        print("Uso: python main_AST.py <caminho_do_arquivo.lps>")
     else:
         main(sys.argv[1])
