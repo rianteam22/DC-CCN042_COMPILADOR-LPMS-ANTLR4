@@ -109,8 +109,8 @@ class TACGenerator(GramaticaVisitor):
         cond = self.visit(ctx.expressaoBooleana())
         label_else = self.new_label()
         label_end = self.new_label()
-        for i in range(10):
-            print(ctx.getChild(i))
+        # for i in range(10):
+        #     print(ctx.getChild(i))
         
         self.emit(f"if not {cond} goto {label_else}")
         
