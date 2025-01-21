@@ -77,9 +77,17 @@ antlr4 -o gen/ -listener -visitor -Dlanguage=Python3 Gramatica.g4
 
 Você pode executar os seguintes comandos no cmd para analisar os arquivos de entrada:
 
-- **Exibir Tokens**:
+- **Exibir Tokens: Entrega 1**:
   ```bash
-  python main.py {nome do .lps de input}
+  python main_tokens.py {nome do .lps de input}
+  ```
+- **Exbir Árvore Sintática Abstrata: Entrega 2**:
+  ```bash
+  python main_AST.py {nome do .lps de input}
+  ```
+- **Exbir Código de Três Endereços: Entrega 3**:
+  ```bash
+  python TACGenerator.py {nome do .lps de input}
   ```
 
 Substitua `{nome do .lps de input}` pelo nome do arquivo de entrada, por exemplo, `input0.lps`.

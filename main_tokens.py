@@ -58,14 +58,14 @@ def main(arquivo_entrada):
     
     # Preencher o token stream e imprimir os tokens no formato < tipo_token, token >
     tokens.fill()
-    '''
+    
     for token in tokens.tokens:
         tipo_token = token_map.get(token.type, "UNKNOWN") # Se o token não estiver no dicionário, retorna "UNKNOWN"
         texto_token = token.text
-        print(f'<{tipo_token},{texto_token}>')'''
+        print(f'<{tipo_token},{texto_token}>')
 
     # Imprimir a árvore de parsing
-    print(Trees.toStringTree(tree, None, parser))
+    #print(Trees.toStringTree(tree, None, parser))
 
 if __name__ == '__main__':
     # Verificar se o nome do arquivo de entrada foi passado como argumento
