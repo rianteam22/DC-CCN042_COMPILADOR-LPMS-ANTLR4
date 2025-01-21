@@ -1,4 +1,6 @@
+import sys
 from antlr4 import *
+from antlr4 import FileStream
 from gen.GramaticaParser import GramaticaParser
 from gen.GramaticaVisitor import GramaticaVisitor
 
@@ -158,7 +160,12 @@ if __name__ == "__main__":
     from gen.GramaticaLexer import GramaticaLexer
     from gen.GramaticaParser import GramaticaParser
 
-    input_stream = FileStream("input1.lps")
+    if len(sys.argv) != 2:
+        print("Usage: python TACGenerator.py <input_file>")
+        sys.exit(1)
+
+    input_file = sys.argv[1]
+    input_stream = FileStream(input_file)
     lexer = GramaticaLexer(input_stream)
     token_stream = CommonTokenStream(lexer)
     parser = GramaticaParser(token_stream)
