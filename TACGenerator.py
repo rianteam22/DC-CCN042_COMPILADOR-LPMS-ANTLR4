@@ -89,16 +89,39 @@ class TACGenerator(GramaticaVisitor):
         self.emit(f"{temp} = {left} {op} {right}")
         return temp
 
+    # def visitCondicional(self, ctx: GramaticaParser.CondicionalContext):
+    #     cond = self.visit(ctx.expressaoBooleana())
+    #     label_true = self.new_label()
+    #     label_end = self.new_label()
+        
+    #     self.emit(f"if {cond} goto {label_true}")
+    #     if ctx.getChild(6):
+    #         self.visit(ctx.getChild(6))
+    #         print(ctx.getChild(6))
+    #     self.emit(f"goto {label_end}")
+    #     self.emit(f"{label_true}:")
+    #     self.visit(ctx.comandos(0))
+    #     self.emit(f"{label_end}:")
+
     def visitCondicional(self, ctx: GramaticaParser.CondicionalContext):
         cond = self.visit(ctx.expressaoBooleana())
-        label_true = self.new_label()
+        label_else = self.new_label()
         label_end = self.new_label()
-        self.emit(f"if {cond} goto {label_true}")
-        if ctx.getChild(6):
-            self.visit(ctx.getChild(6))
+        for i in range(10):
+            print(ctx.getChild(i))
+        
+        self.emit(f"if not {cond} goto {label_else}")
+        
+        # Emitir comandos do bloco if
+        self.visit(ctx.getChild(5))  # Supondo que o bloco if é o terceiro filho
+        print
         self.emit(f"goto {label_end}")
-        self.emit(f"{label_true}:")
-        self.visit(ctx.comandos(0))
+        
+        self.emit(f"{label_else}:")
+        
+        # Emitir comandos do bloco else
+        self.visit(ctx.getChild(9))  # Supondo que o bloco else é o quinto filho
+        
         self.emit(f"{label_end}:")
 
     def visitCmdWhile(self, ctx: GramaticaParser.CmdWhileContext):
