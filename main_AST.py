@@ -20,9 +20,6 @@ def main(file_path):
         print(ast)
     except SemanticError as e:
         print(e)
-    except Exception as e:
-        print(f"Erro inesperado: {e}")
-
 if __name__ == "__main__":
     import sys
     if len(sys.argv) < 2:
