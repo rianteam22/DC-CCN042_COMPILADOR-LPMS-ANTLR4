@@ -145,7 +145,7 @@ class ASTConstrutor(GramaticaVisitor):
             raise SemanticError(f"Não é possível atribuir valor à constante '{var_name}'", ctx.start.line)
         
         var_type = ctx.VARNAME().getSymbol().type
-        value_node = ctx.expressaoAritmetica() or ctx.expressaoBooleana()
+        value_node = ctx.expressao() or ctx.expressaoBooleana()
         value = self.visit(value_node)
         
         # Verificação de tipo
