@@ -199,22 +199,29 @@ class ASTConstrutor(GramaticaVisitor):
         return f"(Entrada: {', '.join(variables)})"
 
     def visitCondicional(self, ctx: GramaticaParser.CondicionalContext):
-        condition = self.visit(ctx.expressaoBooleana())
+        condition_str = self.visit(ctx.expressaoBooleana())
+        try:
+            condition = eval(condition_str, {}, {k: v["value"] for k, v in self.symbol_table.items()})
+        except:
+            raise SemanticError(f"Erro ao avaliar a condição '{condition_str}' do 'if'", ctx.start.line)
         if not isinstance(condition, bool):
-            raise SemanticError(f"Condição {condition} do 'if' não é booleana: {condition}", ctx.start.line)
+            raise SemanticError(f"Condição {condition_str} do 'if' não é booleana: {condition}", ctx.start.line)
         true_block = [self.visit(cmd) for cmd in ctx.comandos(0).comando()]
         false_block = []
         if ctx.comandos(1):
             false_block = [self.visit(cmd) for cmd in ctx.comandos(1).comando()]
-        return f"(Se: {condition} (BlocoVerdadeiro: {self.format_ast(true_block)}) (BlocoFalso: {self.format_ast(false_block)}))"
+        return f"(Se: {condition_str} (BlocoVerdadeiro: {self.format_ast(true_block)}) (BlocoFalso: {self.format_ast(false_block)}))"
 
     def visitCmdWhile(self, ctx: GramaticaParser.CmdWhileContext):
-        condition = self.visit(ctx.expressaoBooleana())
+        condition_str = self.visit(ctx.expressaoBooleana())
+        try:
+            condition = eval(condition_str, {}, {k: v["value"] for k, v in self.symbol_table.items()})
+        except:
+            raise SemanticError(f"Erro ao avaliar a condição '{condition_str}' do 'while'", ctx.start.line)
         if not isinstance(condition, bool):
-            raise SemanticError(f"Condição {condition} do 'while' não é booleana: {condition}", ctx.start.line)
+            raise SemanticError(f"Condição {condition_str} do 'while' não é booleana: {condition}", ctx.start.line)
         body = [self.visit(cmd) for cmd in ctx.comandos().comando()]
-        return f"(Enquanto: {condition} (Corpo: {self.format_ast(body)}))"
-
+        return f"(Enquanto: {condition_str} (Corpo: {self.format_ast(body)}))"
 
     def visitExpressao(self, ctx: GramaticaParser.ExpressaoContext):
         if ctx.expressaoAritmetica():
