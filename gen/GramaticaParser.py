@@ -43,7 +43,7 @@ def serializedATN():
         0,0,0,74,70,1,0,0,0,75,78,1,0,0,0,76,74,1,0,0,0,76,77,1,0,0,0,77,
         79,1,0,0,0,78,76,1,0,0,0,79,80,5,5,0,0,80,9,1,0,0,0,81,83,3,14,7,
         0,82,81,1,0,0,0,83,84,1,0,0,0,84,82,1,0,0,0,84,85,1,0,0,0,85,11,
-        1,0,0,0,86,87,5,28,0,0,87,90,5,7,0,0,88,91,3,26,13,0,89,91,3,32,
+        1,0,0,0,86,87,5,28,0,0,87,90,5,7,0,0,88,91,3,24,12,0,89,91,3,32,
         16,0,90,88,1,0,0,0,90,89,1,0,0,0,91,92,1,0,0,0,92,93,5,5,0,0,93,
         13,1,0,0,0,94,102,3,18,9,0,95,102,3,16,8,0,96,102,3,12,6,0,97,102,
         3,20,10,0,98,102,3,22,11,0,99,100,5,8,0,0,100,102,5,5,0,0,101,94,
@@ -630,8 +630,8 @@ class GramaticaParser ( Parser ):
         def VARNAME(self):
             return self.getToken(GramaticaParser.VARNAME, 0)
 
-        def expressaoAritmetica(self):
-            return self.getTypedRuleContext(GramaticaParser.ExpressaoAritmeticaContext,0)
+        def expressao(self):
+            return self.getTypedRuleContext(GramaticaParser.ExpressaoContext,0)
 
 
         def expressaoBooleana(self):
@@ -673,7 +673,7 @@ class GramaticaParser ( Parser ):
             la_ = self._interp.adaptivePredict(self._input,6,self._ctx)
             if la_ == 1:
                 self.state = 88
-                self.expressaoAritmetica()
+                self.expressao()
                 pass
 
             elif la_ == 2:

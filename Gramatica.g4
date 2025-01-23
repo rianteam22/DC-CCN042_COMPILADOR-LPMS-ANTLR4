@@ -10,7 +10,7 @@ constDecl: 'const' VARNAME '=' (STRING | VALINT | VALFLOAT | VALBOOL) (',' VARNA
 
 comandos: comando+;
 
-opMath: VARNAME '=' (expressaoAritmetica | expressaoBooleana) ';';
+opMath: VARNAME '=' (expressao | expressaoBooleana) ';';
 
 comando: funcinput
        | funcprint
