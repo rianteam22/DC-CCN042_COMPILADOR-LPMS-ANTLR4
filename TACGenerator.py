@@ -4,6 +4,9 @@ from antlr4 import FileStream
 from gen.GramaticaParser import GramaticaParser
 from gen.GramaticaVisitor import GramaticaVisitor
 
+RED = '\033[91m'
+RESET = '\033[0m'
+
 class TACGenerator(GramaticaVisitor):
 
     def __init__(self):
@@ -35,9 +38,19 @@ class TACGenerator(GramaticaVisitor):
             self.visit(comando)
 
     def visitOpMath(self, ctx: GramaticaParser.OpMathContext):
+        #print(RED, "visitOpMath", RESET)
         var = ctx.VARNAME().getText()
         expr_result = self.visit(ctx.getChild(2))
         self.emit(f"{var} = {expr_result}")
+
+    def visitExpressao(self, ctx: GramaticaParser.ExpressaoContext):
+        if len(ctx.children) == 1:
+            child = ctx.getChild(0)
+            if isinstance(child, TerminalNode) and child.symbol.type == GramaticaParser.STRING:
+                return child.getText()
+            else:
+                return self.visit(child)
+        return self.visitExpressaoAritmetica(ctx)
 
     def visitExpressaoAritmetica(self, ctx: GramaticaParser.ExpressaoAritmeticaContext):
         if len(ctx.children) == 1:
@@ -90,7 +103,7 @@ class TACGenerator(GramaticaVisitor):
         
         # Emitir comandos do bloco if
         self.visit(ctx.getChild(5))  # Supondo que o bloco if é o terceiro filho
-        print
+        #print
         self.emit(f"goto {label_end}")
         
         self.emit(f"{label_else}:")
@@ -125,6 +138,28 @@ class TACGenerator(GramaticaVisitor):
         self.emit(f"{temp} = {left} {op} {right}")
         return temp
 
+    
+    def visitFuncprint(self, ctx: GramaticaParser.FuncprintContext):
+        param_count = 0
+        for i in range(2, len(ctx.children)-2):
+            if ctx.getChild(i).getText() == ',': continue
+            else:
+                exp = self.visit(ctx.getChild(i))
+                #exp = ctx.getChild(i).getText()
+                self.emit(f"param {exp}")
+                param_count += 1
+        self.emit(f"call print {param_count}")
+
+
+    def visitFuncinput(self, ctx: GramaticaParser.FuncinputContext):
+        param_count = 0
+        for i in range(2, len(ctx.children)-2):
+            if ctx.getChild(i).getText() == ',': continue
+            else:
+                var = ctx.getChild(i).getText()
+                self.emit(f"param {var}")
+                param_count += 1
+        self.emit(f"call input {param_count}")
 
 if __name__ == "__main__":
     from antlr4 import FileStream
