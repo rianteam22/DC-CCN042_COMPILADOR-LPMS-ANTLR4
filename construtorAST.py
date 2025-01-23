@@ -236,14 +236,37 @@ class ASTConstrutor(GramaticaVisitor):
         if ctx.VALBOOL():
             return ctx.VALBOOL().getText()
         elif ctx.getChildCount() == 3:
-            left = self.visit(ctx.expressaoAritmetica(0) or ctx.expressaoBooleana(0))
+            left = self.visit(ctx.getChild(0))
             operator = ctx.getChild(1).getText()
-            right = self.visit(ctx.expressaoAritmetica(1) or ctx.expressaoBooleana(1))
+            right = self.visit(ctx.getChild(2))
             return f"({left} {operator} {right})"
         elif ctx.getChildCount() == 2:
             operator = ctx.getChild(0).getText()
-            operand = self.visit(ctx.expressaoBooleana(0))
+            operand = self.visit(ctx.getChild(1))
             return f"({operator} {operand})"
+        elif ctx.expressaoAritmetica():
+            # Avaliar a expressão aritmética como booleana
+            value = self.visit(ctx.expressaoAritmetica())
+            if isinstance(value, int) or isinstance(value, float):
+                return value != 0
+            else:
+                raise SemanticError(f"Expressão booleana inválida: {value}", ctx.start.line)
+        elif ctx.VARNAME():
+            var_name = ctx.VARNAME().getText()
+            if var_name not in self.symbol_table:
+                raise SemanticError(f"Variável '{var_name}' não declarada", ctx.start.line)
+            var_value = self.symbol_table[var_name]["value"]
+            if isinstance(var_value, int) or isinstance(var_value, float):
+                return var_value != 0
+            elif isinstance(var_value, str):
+                return bool(var_value)
+            elif isinstance(var_value, bool):
+                return var_value
+            else:
+                raise SemanticError(f"Expressão booleana inválida: {var_value}", ctx.start.line)
+        elif ctx.getChildCount() == 1:
+            return self.visit(ctx.getChild(0))
+
 
     def visitTermo(self, ctx: GramaticaParser.TermoContext):
         result = self.visit(ctx.fator(0))
@@ -268,3 +291,4 @@ class ASTConstrutor(GramaticaVisitor):
 
     def format_ast(self, elements):
         return " ".join(elements)
+        
