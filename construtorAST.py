@@ -93,6 +93,10 @@ def format_list(elements, level=0):
     indent = "  " * level
     return ", ".join(indent + str(element) for element in elements)
 
+# Lista de palavras reservadas
+RESERVED_WORDS = {"if", "else", "while", "print", "input", "int", "float", "bool", "str", "true", "false"}
+
+
 class ASTConstrutor(GramaticaVisitor):
     def __init__(self):
         self.symbol_table = {}  # Tabela de símbolos para armazenar tipo e valor
@@ -115,22 +119,33 @@ class ASTConstrutor(GramaticaVisitor):
     def visitVarDecl(self, ctx: GramaticaParser.VarDeclContext):
         var_type = ctx.VARTYPE().getText()
         variables = [var.getText() for var in ctx.VARNAME()]
+        default_values = {
+            "int": 0,
+            "float": 0.0,
+            "bool": False,
+            "str": ""
+        }
         for var in variables:
             if var in self.symbol_table:
                 raise SemanticError(f"Variável '{var}' já declarada", ctx.start.line)
-            self.symbol_table[var] = {"type": var_type, "value": None}
+            if var in RESERVED_WORDS:
+                raise SemanticError(f"'{var}' é palavra reservada e não pode ser usada como identificador", ctx.start.line)
+            self.symbol_table[var] = {"type": var_type, "value": default_values[var_type]}
         return f"(DeclVar: {var_type} {', '.join(variables)})"
 
     def visitConstDecl(self, ctx: GramaticaParser.ConstDeclContext):
         constants = []
         for i in range(len(ctx.VARNAME())):
             var_name = ctx.VARNAME(i).getText()
-            value = self.visit(ctx.getChild(2 * i + 2))
             if var_name in self.symbol_table:
                 raise SemanticError(f"Constante '{var_name}' já declarada", ctx.start.line)
+            if var_name in RESERVED_WORDS:
+                raise SemanticError(f"'{var_name}' é palavra reservada e não pode ser usada como identificador", ctx.start.line)
+            value = self.visit(ctx.getChild(2 * i + 2))
             self.symbol_table[var_name] = {"type": "const", "value": value}
             constants.append(f"{var_name} = {value}")
         return f"(DeclConst: {', '.join(constants)})"
+    
     
     def visitComandos(self, ctx: GramaticaParser.ComandosContext):
         commands = [self.visit(cmd) for cmd in ctx.comando()]
@@ -168,10 +183,13 @@ class ASTConstrutor(GramaticaVisitor):
 
     def visitFuncprint(self, ctx: GramaticaParser.FuncprintContext):
         expressions = [self.visit(expr) for expr in ctx.expressao()]
-        for idx, expr in enumerate(expressions):
-            if expr is None:
-                print(f"Erro na expressão no índice {idx}: {ctx.expressao(idx).getText()}")
-        return f"(Imprimir: {', '.join(expressions)})"
+        for expr in expressions:
+            if isinstance(expr, (int, float, bool, str)) or expr == None:
+                continue
+            else:
+                raise SemanticError(f"Tipos incompatíveis na função print: {expr}", ctx.start.line)
+        return f"(Imprimir: {', '.join(map(str, expressions))})"
+
 
     def visitFuncinput(self, ctx: GramaticaParser.FuncinputContext):
         variables = [var.getText() for var in ctx.VARNAME()]
