@@ -10,7 +10,7 @@ else:
 
 def serializedATN():
     return [
-        4,1,35,195,2,0,7,0,2,1,7,1,2,2,7,2,2,3,7,3,2,4,7,4,2,5,7,5,2,6,7,
+        4,1,35,196,2,0,7,0,2,1,7,1,2,2,7,2,2,3,7,3,2,4,7,4,2,5,7,5,2,6,7,
         6,2,7,7,7,2,8,7,8,2,9,7,9,2,10,7,10,2,11,7,11,2,12,7,12,2,13,7,13,
         2,14,7,14,2,15,7,15,2,16,7,16,1,0,1,0,1,1,1,1,1,1,1,1,4,1,41,8,1,
         11,1,12,1,42,1,1,4,1,46,8,1,11,1,12,1,47,1,1,1,1,1,2,1,2,3,2,54,
@@ -76,7 +76,7 @@ def serializedATN():
         190,3,32,16,0,190,191,5,11,0,0,191,193,1,0,0,0,192,180,1,0,0,0,192,
         185,1,0,0,0,192,187,1,0,0,0,192,188,1,0,0,0,193,33,1,0,0,0,17,42,
         47,53,61,76,84,90,101,110,123,141,153,160,168,178,183,192
-    ]
+        ]
 
 class GramaticaParser ( Parser ):
 
@@ -278,31 +278,29 @@ class GramaticaParser ( Parser ):
             self.match(GramaticaParser.VARNAME)
             self.state = 38
             self.match(GramaticaParser.T__1)
-            self.state = 40 
+            self.state = 42
             self._errHandler.sync(self)
             _la = self._input.LA(1)
-            while True:
+            while _la==6 or _la==27:
                 self.state = 39
                 self.decVar()
-                self.state = 42 
+                self.state = 44
                 self._errHandler.sync(self)
                 _la = self._input.LA(1)
-                if not (_la==6 or _la==27):
-                    break
 
-            self.state = 45 
+            self.state = 46 
             self._errHandler.sync(self)
             _la = self._input.LA(1)
             while True:
-                self.state = 44
+                self.state = 45
                 self.comandos()
-                self.state = 47 
+                self.state = 48 
                 self._errHandler.sync(self)
                 _la = self._input.LA(1)
                 if not ((((_la) & ~0x3f) == 0 and ((1 << _la) & 268481280) != 0)):
                     break
 
-            self.state = 49
+            self.state = 50
             self.match(GramaticaParser.T__2)
         except RecognitionException as re:
             localctx.exception = re
@@ -353,17 +351,17 @@ class GramaticaParser ( Parser ):
         localctx = GramaticaParser.DecVarContext(self, self._ctx, self.state)
         self.enterRule(localctx, 4, self.RULE_decVar)
         try:
-            self.state = 53
+            self.state = 54
             self._errHandler.sync(self)
             token = self._input.LA(1)
             if token in [27]:
                 self.enterOuterAlt(localctx, 1)
-                self.state = 51
+                self.state = 52
                 self.varDecl()
                 pass
             elif token in [6]:
                 self.enterOuterAlt(localctx, 2)
-                self.state = 52
+                self.state = 53
                 self.constDecl()
                 pass
             else:
@@ -421,23 +419,23 @@ class GramaticaParser ( Parser ):
         self._la = 0 # Token type
         try:
             self.enterOuterAlt(localctx, 1)
-            self.state = 55
-            self.match(GramaticaParser.VARTYPE)
             self.state = 56
+            self.match(GramaticaParser.VARTYPE)
+            self.state = 57
             self.match(GramaticaParser.VARNAME)
-            self.state = 61
+            self.state = 62
             self._errHandler.sync(self)
             _la = self._input.LA(1)
             while _la==4:
-                self.state = 57
-                self.match(GramaticaParser.T__3)
                 self.state = 58
+                self.match(GramaticaParser.T__3)
+                self.state = 59
                 self.match(GramaticaParser.VARNAME)
-                self.state = 63
+                self.state = 64
                 self._errHandler.sync(self)
                 _la = self._input.LA(1)
 
-            self.state = 64
+            self.state = 65
             self.match(GramaticaParser.T__4)
         except RecognitionException as re:
             localctx.exception = re
@@ -512,41 +510,41 @@ class GramaticaParser ( Parser ):
         self._la = 0 # Token type
         try:
             self.enterOuterAlt(localctx, 1)
-            self.state = 66
-            self.match(GramaticaParser.T__5)
             self.state = 67
-            self.match(GramaticaParser.VARNAME)
+            self.match(GramaticaParser.T__5)
             self.state = 68
-            self.match(GramaticaParser.T__6)
+            self.match(GramaticaParser.VARNAME)
             self.state = 69
+            self.match(GramaticaParser.T__6)
+            self.state = 70
             _la = self._input.LA(1)
             if not((((_la) & ~0x3f) == 0 and ((1 << _la) & 8053063680) != 0)):
                 self._errHandler.recoverInline(self)
             else:
                 self._errHandler.reportMatch(self)
                 self.consume()
-            self.state = 76
+            self.state = 77
             self._errHandler.sync(self)
             _la = self._input.LA(1)
             while _la==4:
-                self.state = 70
-                self.match(GramaticaParser.T__3)
                 self.state = 71
-                self.match(GramaticaParser.VARNAME)
+                self.match(GramaticaParser.T__3)
                 self.state = 72
-                self.match(GramaticaParser.T__6)
+                self.match(GramaticaParser.VARNAME)
                 self.state = 73
+                self.match(GramaticaParser.T__6)
+                self.state = 74
                 _la = self._input.LA(1)
                 if not((((_la) & ~0x3f) == 0 and ((1 << _la) & 8053063680) != 0)):
                     self._errHandler.recoverInline(self)
                 else:
                     self._errHandler.reportMatch(self)
                     self.consume()
-                self.state = 78
+                self.state = 79
                 self._errHandler.sync(self)
                 _la = self._input.LA(1)
 
-            self.state = 79
+            self.state = 80
             self.match(GramaticaParser.T__4)
         except RecognitionException as re:
             localctx.exception = re
@@ -597,17 +595,17 @@ class GramaticaParser ( Parser ):
         self.enterRule(localctx, 10, self.RULE_comandos)
         try:
             self.enterOuterAlt(localctx, 1)
-            self.state = 82 
+            self.state = 83 
             self._errHandler.sync(self)
             _alt = 1
             while _alt!=2 and _alt!=ATN.INVALID_ALT_NUMBER:
                 if _alt == 1:
-                    self.state = 81
+                    self.state = 82
                     self.comando()
 
                 else:
                     raise NoViableAltException(self)
-                self.state = 84 
+                self.state = 85 
                 self._errHandler.sync(self)
                 _alt = self._interp.adaptivePredict(self._input,5,self._ctx)
 
@@ -664,25 +662,26 @@ class GramaticaParser ( Parser ):
         self.enterRule(localctx, 12, self.RULE_opMath)
         try:
             self.enterOuterAlt(localctx, 1)
-            self.state = 86
-            self.match(GramaticaParser.VARNAME)
             self.state = 87
+            self.match(GramaticaParser.VARNAME)
+            self.state = 88
             self.match(GramaticaParser.T__6)
-            self.state = 90
+            self.state = 91
             self._errHandler.sync(self)
             la_ = self._interp.adaptivePredict(self._input,6,self._ctx)
             if la_ == 1:
+
                 self.state = 88
                 self.expressao()
                 pass
 
             elif la_ == 2:
-                self.state = 89
+                self.state = 90
                 self.expressaoBooleana()
                 pass
 
 
-            self.state = 92
+            self.state = 93
             self.match(GramaticaParser.T__4)
         except RecognitionException as re:
             localctx.exception = re
@@ -745,39 +744,39 @@ class GramaticaParser ( Parser ):
         localctx = GramaticaParser.ComandoContext(self, self._ctx, self.state)
         self.enterRule(localctx, 14, self.RULE_comando)
         try:
-            self.state = 101
+            self.state = 102
             self._errHandler.sync(self)
             token = self._input.LA(1)
             if token in [12]:
                 self.enterOuterAlt(localctx, 1)
-                self.state = 94
+                self.state = 95
                 self.funcinput()
                 pass
             elif token in [9]:
                 self.enterOuterAlt(localctx, 2)
-                self.state = 95
+                self.state = 96
                 self.funcprint()
                 pass
             elif token in [28]:
                 self.enterOuterAlt(localctx, 3)
-                self.state = 96
+                self.state = 97
                 self.opMath()
                 pass
             elif token in [13]:
                 self.enterOuterAlt(localctx, 4)
-                self.state = 97
+                self.state = 98
                 self.condicional()
                 pass
             elif token in [15]:
                 self.enterOuterAlt(localctx, 5)
-                self.state = 98
+                self.state = 99
                 self.cmdWhile()
                 pass
             elif token in [8]:
                 self.enterOuterAlt(localctx, 6)
-                self.state = 99
-                self.match(GramaticaParser.T__7)
                 self.state = 100
+                self.match(GramaticaParser.T__7)
+                self.state = 101
                 self.match(GramaticaParser.T__4)
                 pass
             else:
@@ -833,27 +832,27 @@ class GramaticaParser ( Parser ):
         self._la = 0 # Token type
         try:
             self.enterOuterAlt(localctx, 1)
-            self.state = 103
-            self.match(GramaticaParser.T__8)
             self.state = 104
-            self.match(GramaticaParser.T__9)
+            self.match(GramaticaParser.T__8)
             self.state = 105
+            self.match(GramaticaParser.T__9)
+            self.state = 106
             self.expressao()
-            self.state = 110
+            self.state = 111
             self._errHandler.sync(self)
             _la = self._input.LA(1)
             while _la==4:
-                self.state = 106
-                self.match(GramaticaParser.T__3)
                 self.state = 107
+                self.match(GramaticaParser.T__3)
+                self.state = 108
                 self.expressao()
-                self.state = 112
+                self.state = 113
                 self._errHandler.sync(self)
                 _la = self._input.LA(1)
 
-            self.state = 113
-            self.match(GramaticaParser.T__10)
             self.state = 114
+            self.match(GramaticaParser.T__10)
+            self.state = 115
             self.match(GramaticaParser.T__4)
         except RecognitionException as re:
             localctx.exception = re
@@ -904,27 +903,27 @@ class GramaticaParser ( Parser ):
         self._la = 0 # Token type
         try:
             self.enterOuterAlt(localctx, 1)
-            self.state = 116
-            self.match(GramaticaParser.T__11)
             self.state = 117
-            self.match(GramaticaParser.T__9)
+            self.match(GramaticaParser.T__11)
             self.state = 118
+            self.match(GramaticaParser.T__9)
+            self.state = 119
             self.match(GramaticaParser.VARNAME)
-            self.state = 123
+            self.state = 124
             self._errHandler.sync(self)
             _la = self._input.LA(1)
             while _la==4:
-                self.state = 119
-                self.match(GramaticaParser.T__3)
                 self.state = 120
+                self.match(GramaticaParser.T__3)
+                self.state = 121
                 self.match(GramaticaParser.VARNAME)
-                self.state = 125
+                self.state = 126
                 self._errHandler.sync(self)
                 _la = self._input.LA(1)
 
-            self.state = 126
-            self.match(GramaticaParser.T__10)
             self.state = 127
+            self.match(GramaticaParser.T__10)
+            self.state = 128
             self.match(GramaticaParser.T__4)
         except RecognitionException as re:
             localctx.exception = re
@@ -980,31 +979,31 @@ class GramaticaParser ( Parser ):
         self._la = 0 # Token type
         try:
             self.enterOuterAlt(localctx, 1)
-            self.state = 129
-            self.match(GramaticaParser.T__12)
             self.state = 130
-            self.match(GramaticaParser.T__9)
+            self.match(GramaticaParser.T__12)
             self.state = 131
-            self.expressaoBooleana()
+            self.match(GramaticaParser.T__9)
             self.state = 132
-            self.match(GramaticaParser.T__10)
+            self.expressaoBooleana()
             self.state = 133
-            self.match(GramaticaParser.T__1)
+            self.match(GramaticaParser.T__10)
             self.state = 134
-            self.comandos()
+            self.match(GramaticaParser.T__1)
             self.state = 135
+            self.comandos()
+            self.state = 136
             self.match(GramaticaParser.T__2)
-            self.state = 141
+            self.state = 142
             self._errHandler.sync(self)
             _la = self._input.LA(1)
             if _la==14:
-                self.state = 136
-                self.match(GramaticaParser.T__13)
                 self.state = 137
-                self.match(GramaticaParser.T__1)
+                self.match(GramaticaParser.T__13)
                 self.state = 138
-                self.comandos()
+                self.match(GramaticaParser.T__1)
                 self.state = 139
+                self.comandos()
+                self.state = 140
                 self.match(GramaticaParser.T__2)
 
 
@@ -1058,19 +1057,19 @@ class GramaticaParser ( Parser ):
         self.enterRule(localctx, 22, self.RULE_cmdWhile)
         try:
             self.enterOuterAlt(localctx, 1)
-            self.state = 143
-            self.match(GramaticaParser.T__14)
             self.state = 144
-            self.match(GramaticaParser.T__9)
+            self.match(GramaticaParser.T__14)
             self.state = 145
-            self.expressaoBooleana()
+            self.match(GramaticaParser.T__9)
             self.state = 146
-            self.match(GramaticaParser.T__10)
+            self.expressaoBooleana()
             self.state = 147
-            self.match(GramaticaParser.T__1)
+            self.match(GramaticaParser.T__10)
             self.state = 148
-            self.comandos()
+            self.match(GramaticaParser.T__1)
             self.state = 149
+            self.comandos()
+            self.state = 150
             self.match(GramaticaParser.T__2)
         except RecognitionException as re:
             localctx.exception = re
@@ -1120,17 +1119,17 @@ class GramaticaParser ( Parser ):
         localctx = GramaticaParser.ExpressaoContext(self, self._ctx, self.state)
         self.enterRule(localctx, 24, self.RULE_expressao)
         try:
-            self.state = 153
+            self.state = 154
             self._errHandler.sync(self)
             token = self._input.LA(1)
             if token in [10, 28, 30, 31]:
                 self.enterOuterAlt(localctx, 1)
-                self.state = 151
+                self.state = 152
                 self.expressaoAritmetica()
                 pass
             elif token in [32]:
                 self.enterOuterAlt(localctx, 2)
-                self.state = 152
+                self.state = 153
                 self.match(GramaticaParser.STRING)
                 pass
             else:
@@ -1186,22 +1185,22 @@ class GramaticaParser ( Parser ):
         self._la = 0 # Token type
         try:
             self.enterOuterAlt(localctx, 1)
-            self.state = 155
+            self.state = 156
             self.termo()
-            self.state = 160
+            self.state = 161
             self._errHandler.sync(self)
             _la = self._input.LA(1)
             while _la==16 or _la==17:
-                self.state = 156
+                self.state = 157
                 _la = self._input.LA(1)
                 if not(_la==16 or _la==17):
                     self._errHandler.recoverInline(self)
                 else:
                     self._errHandler.reportMatch(self)
                     self.consume()
-                self.state = 157
+                self.state = 158
                 self.termo()
-                self.state = 162
+                self.state = 163
                 self._errHandler.sync(self)
                 _la = self._input.LA(1)
 
@@ -1255,22 +1254,22 @@ class GramaticaParser ( Parser ):
         self._la = 0 # Token type
         try:
             self.enterOuterAlt(localctx, 1)
-            self.state = 163
+            self.state = 164
             self.fator()
-            self.state = 168
+            self.state = 169
             self._errHandler.sync(self)
             _la = self._input.LA(1)
             while _la==18 or _la==19:
-                self.state = 164
+                self.state = 165
                 _la = self._input.LA(1)
                 if not(_la==18 or _la==19):
                     self._errHandler.recoverInline(self)
                 else:
                     self._errHandler.reportMatch(self)
                     self.consume()
-                self.state = 165
+                self.state = 166
                 self.fator()
-                self.state = 170
+                self.state = 171
                 self._errHandler.sync(self)
                 _la = self._input.LA(1)
 
@@ -1328,31 +1327,31 @@ class GramaticaParser ( Parser ):
         localctx = GramaticaParser.FatorContext(self, self._ctx, self.state)
         self.enterRule(localctx, 30, self.RULE_fator)
         try:
-            self.state = 178
+            self.state = 179
             self._errHandler.sync(self)
             token = self._input.LA(1)
             if token in [28]:
                 self.enterOuterAlt(localctx, 1)
-                self.state = 171
+                self.state = 172
                 self.match(GramaticaParser.VARNAME)
                 pass
             elif token in [31]:
                 self.enterOuterAlt(localctx, 2)
-                self.state = 172
+                self.state = 173
                 self.match(GramaticaParser.VALFLOAT)
                 pass
             elif token in [30]:
                 self.enterOuterAlt(localctx, 3)
-                self.state = 173
+                self.state = 174
                 self.match(GramaticaParser.VALINT)
                 pass
             elif token in [10]:
                 self.enterOuterAlt(localctx, 4)
-                self.state = 174
-                self.match(GramaticaParser.T__9)
                 self.state = 175
-                self.expressaoAritmetica()
+                self.match(GramaticaParser.T__9)
                 self.state = 176
+                self.expressaoAritmetica()
+                self.state = 177
                 self.match(GramaticaParser.T__10)
                 pass
             else:
@@ -1414,25 +1413,25 @@ class GramaticaParser ( Parser ):
         self.enterRule(localctx, 32, self.RULE_expressaoBooleana)
         self._la = 0 # Token type
         try:
-            self.state = 192
+            self.state = 193
             self._errHandler.sync(self)
             la_ = self._interp.adaptivePredict(self._input,16,self._ctx)
             if la_ == 1:
                 self.enterOuterAlt(localctx, 1)
-                self.state = 180
+                self.state = 181
                 self.expressaoAritmetica()
-                self.state = 183
+                self.state = 184
                 self._errHandler.sync(self)
                 _la = self._input.LA(1)
                 if (((_la) & ~0x3f) == 0 and ((1 << _la) & 66060288) != 0):
-                    self.state = 181
+                    self.state = 182
                     _la = self._input.LA(1)
                     if not((((_la) & ~0x3f) == 0 and ((1 << _la) & 66060288) != 0)):
                         self._errHandler.recoverInline(self)
                     else:
                         self._errHandler.reportMatch(self)
                         self.consume()
-                    self.state = 182
+                    self.state = 183
                     self.expressaoAritmetica()
 
 
@@ -1440,25 +1439,25 @@ class GramaticaParser ( Parser ):
 
             elif la_ == 2:
                 self.enterOuterAlt(localctx, 2)
-                self.state = 185
-                self.match(GramaticaParser.T__25)
                 self.state = 186
+                self.match(GramaticaParser.T__25)
+                self.state = 187
                 self.expressaoBooleana()
                 pass
 
             elif la_ == 3:
                 self.enterOuterAlt(localctx, 3)
-                self.state = 187
+                self.state = 188
                 self.match(GramaticaParser.VALBOOL)
                 pass
 
             elif la_ == 4:
                 self.enterOuterAlt(localctx, 4)
-                self.state = 188
-                self.match(GramaticaParser.T__9)
                 self.state = 189
-                self.expressaoBooleana()
+                self.match(GramaticaParser.T__9)
                 self.state = 190
+                self.expressaoBooleana()
+                self.state = 191
                 self.match(GramaticaParser.T__10)
                 pass
 

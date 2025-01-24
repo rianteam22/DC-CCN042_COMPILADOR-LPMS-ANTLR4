@@ -2,7 +2,7 @@ grammar Gramatica;
 
 prog: main;
 
-main: 'Program' VARNAME '{' decVar+ comandos+ '}';
+main: 'Program' VARNAME '{' decVar* comandos+ '}';
 
 decVar: varDecl | constDecl;
 varDecl: VARTYPE VARNAME (',' VARNAME)* ';';
