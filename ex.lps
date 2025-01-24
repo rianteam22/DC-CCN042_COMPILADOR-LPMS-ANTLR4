@@ -1,6 +1,13 @@
 Program ex{
-    int a, b;
+    int a, b, c, d;
+    str frase;
+
     a = 2;
     b = 3;
-    a = 3*b;
+    input(c, d);
+    print(a*c, b*d);
+
+    frase = "oi mundo";
+    print(frase);
+    print("hello world!");
 }
